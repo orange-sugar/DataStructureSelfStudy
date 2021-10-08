@@ -53,7 +53,7 @@ template <typename T>
 static BinNodePosi<T> removeAt(BinNodePosi<T> &x, BinNodePosi<T> & hot) {
     BinNodePosi<T> w = x;
     BinNodePosi<T> succ = nullptr;
-    if (!HasLChild(*x)) succ = x = x->rc;
+    if      (!HasLChild(*x)) succ = x = x->rc;
     else if (!HasRChild(*x)) succ = x = x->lc;
     else {
         w = w->succ(); swap(x->data, w->data);

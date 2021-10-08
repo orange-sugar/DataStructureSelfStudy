@@ -5,7 +5,9 @@ void test_bst() {
     Print<int> Print;
     BST<int> bst;
     bst.insert(2); bst.insert(1); bst.insert(3);
+    bst.remove(3);
     bst.travIn(Print);
+    printf("\n");
     print(bst);
 }
 
