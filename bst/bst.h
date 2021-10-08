@@ -2,6 +2,7 @@
 #define BST_H
 
 #include "../BinTree/BinTree.h"
+using std::swap;
 
 template <typename T> class BST: public BinTree<T> {
 protected:
@@ -35,16 +36,16 @@ BinNodePosi<T> BST<T>::insert(const T & e) {
     BinNodePosi<T> &v = search(e); if (v) return v;
     v = new BinNode<T> (e, _hot);
     this->_size++;
-    updateHeightAbove(v);
+    this->updateHeightAbove(v);
     return v;
 }
 
 template <typename T>
 bool BST<T>::remove(const T& e) {
-    BinNodePosi<T> & v = search(e);
+    BinNodePosi<T> & x = search(e);
     if (!x) return false;
     removeAt(x, _hot);
-    _size--; updateHeightAbove(_hot);
+    this->_size--; this->updateHeightAbove(_hot);
     return true;
 }
 
@@ -55,7 +56,9 @@ static BinNodePosi<T> removeAt(BinNodePosi<T> &x, BinNodePosi<T> & hot) {
     if (!HasLChild(*x)) succ = x = x->rc;
     else if (!HasRChild(*x)) succ = x = x->lc;
     else {
-
+        w = w->succ(); swap(x->data, w->data);
+        BinNodePosi<T> u = w->parent;
+        ( ( u == x ) ? u->rc : u->lc ) = succ = w->rc; 
     }
     hot = w->parent;
     if (succ) succ->parent = hot;

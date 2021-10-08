@@ -2,6 +2,7 @@
 #define UTILS_FUNCS_H
 
 #include <iostream>
+#include <climits>
 
 #define __int64 long long
 #define _INT_MAX_ 2147483647

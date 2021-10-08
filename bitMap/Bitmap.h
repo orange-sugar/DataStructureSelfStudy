@@ -37,7 +37,12 @@ public:
         if (k < 8*N) return;
         int oldN = N; char* oldM = M;
         init(2*k);
-        memcpy_s(M, N, oldM, oldN); delete []oldM;
+#if defined (__WIN32)
+        memcpy_s(M, N, oldM, oldN);
+#elif defined (__linux__)
+        memcpy(M, oldM, oldN);
+#endif
+        delete []oldM;
     }
 
     void print(int n) {
