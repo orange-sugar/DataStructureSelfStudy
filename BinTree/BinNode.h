@@ -144,4 +144,17 @@ void BinNode<T>::travLevel(VST & visit) {
     }
 }
 
+template <typename T>
+BinNodePosi<T> BinNode<T>::succ() {
+    BinNodePosi<T> s = this;
+    if (rc) {
+        s = rc;
+        while (HasRChild(*s)) s = s->lc;
+    }
+    else {
+        while (IsRChild(*s)) s = s->parent;
+        s = s->parent;
+    }
+}
+
 #endif

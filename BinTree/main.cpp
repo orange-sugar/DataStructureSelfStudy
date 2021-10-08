@@ -21,6 +21,7 @@ void test_BinTree() {
     // bt.travPre(Print);
 
     print (bt);
+    
 }
 
 int main() {

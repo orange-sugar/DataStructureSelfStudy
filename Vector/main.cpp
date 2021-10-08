@@ -35,7 +35,8 @@ void test_othertype() {
 }
 
 int main() {
-    test_Vector();
+    //test_Vector();
     // test_othertype();
+    
     return 0;
 }
