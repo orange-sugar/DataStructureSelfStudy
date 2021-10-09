@@ -155,6 +155,7 @@ BinNodePosi<T> BinNode<T>::succ() {
         while (IsRChild(*s)) s = s->parent;
         s = s->parent;
     }
+    return s;
 }
 
 #endif
