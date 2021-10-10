@@ -10,7 +10,7 @@ protected:
     BinNodePosi<T> connect34 ( 
       BinNodePosi<T>, BinNodePosi<T>, BinNodePosi<T>,
       BinNodePosi<T>, BinNodePosi<T>, BinNodePosi<T>, BinNodePosi<T> );
-    BinNodePosi<T> rotateAt ( BinNodePosi<T> x ); 
+    BinNodePosi<T> rotateAt ( BinNodePosi<T> v ); 
 
 public:
     virtual BinNodePosi<T>& search(T const&);
@@ -65,4 +65,33 @@ static BinNodePosi<T> removeAt(BinNodePosi<T> &x, BinNodePosi<T> & hot) {
     release(w->data); release(w);
     return succ;
 }
+
+template <typename T>
+BinNodePosi<T> BST<T>::connect34 ( 
+      BinNodePosi<T> a, BinNodePosi<T> b, BinNodePosi<T> c,
+      BinNodePosi<T> T0, BinNodePosi<T> T1, BinNodePosi<T> T2, BinNodePosi<T> T3) {
+    a->lc = T0; if (T0) T0->parent = a;
+    a->rc = T1; if (T1) T1->parent = a; updateHeight(a);
+    c->lc = T2; if (T2) T2->parent = b;
+    c->rc = T3; if (T3) T3->parent = b; updateHeight(c);
+    b->lc = a; a->parent = b;
+    b->rc = c; c->parent = b;
+    return b;
+}
+
+template <typename T>
+BinNodePosi<T> BST<T>::rotateAt ( BinNodePosi<T> v ) {
+    if (!v) { printf("\a\nFail to rotate a null node\n"); exit(-1); }
+    BinNodePosi<T> p = v->parent; BinNodePosi<T> g = p->parent;
+    if (IsLChild(*p))
+        if (IsLChild(*v)) { // zig-zig
+            p->parent = g->parent;
+            return connect34(v, p, g, v->lc, v->rc, p->rc, g->rc);
+        }
+        else { // z
+
+        }
+} 
+
+
 #endif
