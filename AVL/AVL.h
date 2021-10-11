@@ -17,7 +17,10 @@ BinNodePosi<T> AVL<T>::insert(const T & e) {
     BinNodePosi<T> xx = x = new BinNode<T>(e, this->_hot); this->_size++;
     for (BinNodePosi<T> g = this->_hot; g; g = g->parent)
         if (!AvlBalanced(*g)) {
-            FromParentTo(*g) = this->rotateAt(tallerChild(tallerChild(g)));
+            auto &s = FromParentTo(*g);
+            //auto ss = this->rotateAt(tallerChild(tallerChild(g)));
+            //FromParentTo(*g) 
+            s = this->rotateAt(tallerChild(tallerChild(g)));
             break;
         }
         else 
