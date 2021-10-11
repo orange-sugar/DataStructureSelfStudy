@@ -7,14 +7,15 @@
 #include "../../Graph/GraphMatrix.h"
 #include "../../Graph/Graph.h"
 #include "../utils.h"
+#include "../../bst/bst.h"
+#include "../../AVL/AVL.h"
 
 #define ROOT 0
 #define L_CHILD 1
 #define R_CHILD -1*L_CHILD
 
-/* 记录trouble */
 
-template <typename T> //元素类型
+template <typename T> 
 static void printBinTree ( BinNodePosi<T> bt, int depth, int type, Bitmap* bType );
 
 // template <typename T> static void print ( const T& x ) {  UniPrint::p ( x );  } //for Stack
@@ -35,7 +36,7 @@ public:
        case VISITED:        printf ( "V" ); break;
        default:             printf ( "X" ); break;
    }
-    } //图顶点的状�?
+    }
     static void p ( EType e ) {
       switch ( e ) {
       case UNDETERMINED:   printf ( "U" ); break;
@@ -45,10 +46,12 @@ public:
       case FORWARD:        printf ( "F" ); break;
       default:             printf ( "X" ); break;
    }
-    } //图边的类�?
+    } 
 
-    template <typename T> static void p ( BinNode<T>& ); //BinTree节点
-    template <typename T> static void p ( BinTree<T>& ); //二叉�?
+    template <typename T> static void p ( BinNode<T>& ); 
+    template <typename T> static void p ( BinTree<T>& ); 
+    template <typename T> static void p ( BST<T>& ); //BST
+    template <typename T> static void p ( AVL<T>& ); //AVL
     template <typename Tv, typename Te> static void p ( GraphMatrix<Tv, Te>& ); //Graph
 
 };
@@ -66,25 +69,25 @@ template <typename T> void UniPrint::p (BinNode<T>& node ) {
    );
 }
 
-template <typename T> //元素类型
-void UniPrint::p ( BinTree<T> & bt ) { //引用
-   printf ( "%s[%X]*%d:\n", typeid ( bt ).name(), &bt, bt.size() ); //基本信息
-   Bitmap* branchType = new Bitmap; //记录当前节点祖先的方�?
-   printBinTree<T> ( bt.root(), -1, ROOT, branchType ); //树状结构
+template <typename T> 
+void UniPrint::p ( BinTree<T> & bt ) { 
+   printf ( "%s[%X]*%d:\n", typeid ( bt ).name(), &bt, bt.size() ); 
+   Bitmap* branchType = new Bitmap; 
+   printBinTree<T> ( bt.root(), -1, ROOT, branchType ); 
    release ( branchType ); printf ( "\n" );
 }
 
-template <typename T> //元素类型
+template <typename T> 
 static void printBinTree ( BinNodePosi<T> bt, int depth, int type, Bitmap* bType ) {
    if ( !bt ) return;
    if ( -1 < depth ) //设置当前层的拐向标志
       R_CHILD == type ? bType->set ( depth ) : bType->clear ( depth );
-   printBinTree ( bt->rc, depth + 1, R_CHILD, bType ); //右子树（在上�?
+   printBinTree ( bt->rc, depth + 1, R_CHILD, bType ); //右子树（在上）
    print ( bt ); printf ( " *" );
    for ( int i = -1; i < depth; i++ ) //根据相邻各层
       if ( ( 0 > i ) || bType->test ( i ) == bType->test ( i + 1 ) ) //的拐向是否一致，即可确定
          printf ( "      " ); //是否应该
-      else  printf ( "�?    " ); //打印横线
+      else  printf ( "│    " ); //打印横线
    switch ( type ) {
       case  R_CHILD  :  printf ( "┌─" );  break;
       case  L_CHILD  :  printf ( "└─" );  break;
@@ -92,26 +95,26 @@ static void printBinTree ( BinNodePosi<T> bt, int depth, int type, Bitmap* bType
    }
    print ( bt );
    printf ( "\n" );
-   printBinTree ( bt->lc, depth + 1, L_CHILD, bType ); //左子树（在下�?
+   printBinTree ( bt->lc, depth + 1, L_CHILD, bType ); 
 }
 
-template <typename Tv, typename Te> //顶点类型、边类型
-void UniPrint::p ( GraphMatrix<Tv, Te>& s ) { //引用
+template <typename Tv, typename Te> 
+void UniPrint::p ( GraphMatrix<Tv, Te>& s ) { 
    int inD = 0; for ( int i = 0; i < s.n; i++ ) inD += s.inDegree ( i );
    int outD = 0; for ( int i = 0; i < s.n; i++ ) outD += s.outDegree ( i );
-   printf ( "%s[%p]*(%d, %d):\n", typeid ( s ).name(), &s, s.n, s.e ); //基本信息
-// 标题�?
+   printf ( "%s[%p]*(%d, %d):\n", typeid ( s ).name(), &s, s.n, s.e ); 
+
    print ( s.n ); printf ( " " ); print ( inD ); printf ( "|" );
    for ( int i = 0; i < s.n; i++ ) { print ( s.vertex ( i ) ); printf ( "[" ); print ( s.status ( i ) ); printf ( "] " ); }
    printf ( "\n" );
-// 标题行（续）
+
    print ( outD ); printf ( " " ); print ( s.e ); printf ( "|" );
    for ( int i = 0; i < s.n; i++ ) { print ( s.inDegree ( i ) ); printf ( " " ); }
    printf ( "| dTime fTime Parent Weight\n" );
-// 水平分隔�?
+
    printf ( "-----------+" ); for ( int i = 0; i < s.n; i++ ) printf ( "------" );
    printf ( "+----------------------------\n" );
-// 逐行输出各顶�?
+
    for ( int i = 0; i < s.n; i++ ) {
       print ( s.vertex ( i ) ); printf ( "[" ); print ( s.status ( i ) ); printf ( "] " ); print ( s.outDegree ( i ) ); printf ( "|" );
       for ( int j = 0; j < s.n; j++ )
@@ -124,5 +127,23 @@ void UniPrint::p ( GraphMatrix<Tv, Te>& s ) { //引用
    }
    printf ( "\n" );
 }
+
+template <typename T> //元素类型
+void UniPrint::p ( BST<T> & bt ) { //引用
+   printf ( "%s[%p]*%d:\n", typeid ( bt ).name(), &bt, bt.size() ); //基本信息
+   Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
+   printBinTree ( bt.root(), -1, ROOT, branchType ); //树状结构
+   release ( branchType ); printf ( "\n" );
+}
+
+template <typename T> //元素类型
+void UniPrint::p ( AVL<T> & avl ) { //引用
+   printf ( "%s[%p]*%d:\n", typeid ( avl ).name(), &avl, avl.size() ); //基本信息
+   Bitmap* branchType = new Bitmap; //记录当前节点祖先的方向
+   printBinTree ( avl.root(), -1, ROOT, branchType ); //树状结构
+   release ( branchType ); printf ( "\n" );
+}
+
+
 
 #endif
