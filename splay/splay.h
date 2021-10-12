@@ -64,13 +64,13 @@ BinNodePosi<T> Splay<T>::splay(BinNodePosi<T> v) {
 template <typename T>
 BinNodePosi<T> & Splay<T>::search(const T & e) {
     BinNodePosi<T> p = this->searchIn(this->root, e, this->_hot = nullptr);
-    this->_root = splay(p ? p : _hot);
-    return _root;
+    this->_root = splay(p ? p : this->_hot);
+    return this->_root;
 }
 
 template <typename T>
 BinNodePosi<T> & Splay<T>::insert(const T & e) {
-    if (!this->_root) { _this->_size++; reutrn new BinNode<T>(e); }
+    if (!this->_root) { this->_size++; return new BinNode<T>(e); }
     if (e == search(e)->data) return this->_root;
     this->_size++; BinNodePosi<T> t = this->_root;
     if (this->_root->data < e) {
@@ -78,11 +78,11 @@ BinNodePosi<T> & Splay<T>::insert(const T & e) {
         if (HasRChild(*t)) { t->rc->parent = this->_root; t->rc = nullptr; }
     }
     else {
-        t->parent = _root = new BinNode<T> ( e, NULL, t->lc, t );
-        if ( HasLChild ( *t ) ) { t->lc->parent = _root; t->lc = NULL; }
+        t->parent = this->_root = new BinNode<T> ( e, NULL, t->lc, t );
+        if ( HasLChild ( *t ) ) { t->lc->parent = this->_root; t->lc = NULL; }
     }
     updateHeightAbove ( t );
-    return _root; 
+    return this->_root; 
 }
 
 #endif
