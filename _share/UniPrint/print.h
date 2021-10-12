@@ -77,7 +77,7 @@ void UniPrint::p ( BinTree<T> & bt ) {
    release ( branchType ); printf ( "\n" );
 }
 
-template <typename T> 
+template <typename T> //元素类型
 static void printBinTree ( BinNodePosi<T> bt, int depth, int type, Bitmap* bType ) {
    if ( !bt ) return;
    if ( -1 < depth ) //设置当前层的拐向标志
@@ -95,7 +95,7 @@ static void printBinTree ( BinNodePosi<T> bt, int depth, int type, Bitmap* bType
    }
    print ( bt );
    printf ( "\n" );
-   printBinTree ( bt->lc, depth + 1, L_CHILD, bType ); 
+   printBinTree ( bt->lc, depth + 1, L_CHILD, bType ); //左子树（在下）
 }
 
 template <typename Tv, typename Te> 

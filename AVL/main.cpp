@@ -13,8 +13,8 @@ void test_AVL() {
     }
     
     print(avl);
-    // avl.remove(7);
-    // print(avl);
+    avl.remove(7);
+    print(avl);
 }
 
 int main() {
