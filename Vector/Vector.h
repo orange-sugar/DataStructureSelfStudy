@@ -53,7 +53,7 @@ protected:
     int _capacity;
     T *_elem;
 public:
-    // 默认、拷贝构造函�?
+    // 默认、拷贝构造函�?
     // Vector(int c = DEFAULT_CAPACITY) { _elem = new T[ _capacity = c ]; _size = 0; }
     Vector(int c = DEFAULT_CAPACITY, int s = 0, T v = 0) 
     { _elem = new T[_capacity = s]; for (_size = 0; _size < s; _elem[_size++] = v); }
@@ -72,8 +72,8 @@ public:
     Rank find(T const& e) const { return find(e, 0, _size); }               // 无序向量查找
     Rank find(T const& e, Rank lo, Rank hi) const;                          
     Rank search(T const& e) const                                           // 有序向量查找
-    { return (0 >= _size) ? -1 : serach(e, 0, _size); }
-    Rank serach(T const& e, Rank lo, Rank hi) 
+    { return (0 >= _size) ? -1 : search(e, 0, _size); }
+    Rank search(T const& e, Rank lo, Rank hi) const
     { return (rand() % 2) ? 
             fibSearch(_elem, e, lo, hi) : binSearch(_elem, e, lo, hi); }
     
@@ -124,7 +124,7 @@ void Vector<T>::shrink() {
 }
 
 
-template<typename T> //返回最后一个元素e的位置，失败则返�? lo - 1
+template<typename T> //返回最后一个元素e的位置，失败则返�? lo - 1
 Rank Vector<T>::find (T const& e, Rank lo, Rank hi) const {
     while ((lo < hi--) && (e != _elem[hi]));
     return hi;

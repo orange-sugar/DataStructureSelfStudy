@@ -24,6 +24,8 @@ void test_Vector() {
     b.uniquify();
     b.traverse(Print);
     cout << endl;
+
+    cout << b.search(2);
 }
 
 void test_othertype() {
@@ -35,7 +37,7 @@ void test_othertype() {
 }
 
 int main() {
-    //test_Vector();
+    test_Vector();
     // test_othertype();
     
     return 0;
