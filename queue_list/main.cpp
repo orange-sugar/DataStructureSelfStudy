@@ -10,5 +10,5 @@ int main() {
     q.traverse(Print);
     q.dequeue();
     std::cout << q.front();
-    return 0;
+    return 0; 
 }
