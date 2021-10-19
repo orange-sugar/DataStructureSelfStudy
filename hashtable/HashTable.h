@@ -35,7 +35,7 @@ template <typename K, typename V> struct Dictionary { //词典Dictionary模板�
    virtual bool remove ( K k ) = 0; //删除词条
 };
 
-static int primeNLT(int c, int n, char* file) {
+int primeNLT(int c, int n, const char* file) {
     Bitmap B (file , n);
     while (c < n) 
         if (B.test(c)) c++;
@@ -67,7 +67,8 @@ public:
 
 
 template<typename K, typename V> HashTable<K, V>::HashTable(int c) {
-    M = primeNLT(c, 1048576, const_cast<char*>("../_input/prime-1048576-bitmap.txt"));
+    char s[]= "../_input/prime-1048576-bitmap.txt";
+    M = primeNLT(c, 1048576, "../_input/prime-1048576-bitmap.txt");
     N = 0; ht = new Entry<K, V>* [M];
     memset(ht, 0, sizeof(Entry<K, V>*) * M);
     lazyRemoval = new Bitmap(M);
@@ -91,6 +92,46 @@ int HashTable<K, V>::probe4Hit(const K& k) {
     while ((ht[r] && (k != ht[r]->key)) || (!ht[r] && lazilyRemoved(r))) 
         r = (r + 1) % M;
     return r;
+}
+
+template<typename K, typename V>
+bool HashTable<K, V>::remove(K k) {
+    int r = probe4Hit(k);
+    if (!ht[r]) return false;
+    release(ht[r]); 
+    ht[r] = nullptr;
+    markAsRemoved(r);
+    N--;
+    return true;
+}
+
+template<typename K, typename V>
+bool HashTable<K, V>::put(K k, V v) {
+    if (ht[probe4Hit(k)]) return false;
+    int r = probe4Free(k);
+    ht[r] = new Entry<K, V> (k, v);
+    ++N;
+    return true;
+}
+
+template<typename K, typename V>
+int HashTable<K, V>::probe4Free(const K& k) {
+    int r = hashCode(k) % M;
+    while (ht[r]) r = (r+1)%M;
+    return r;
+}
+
+template<typename K, typename V>
+void HashTable<K, V>::rehash() {
+    int old_capacity = M; Entry<K, V>* old_ht = ht;
+    M = primeNLT(2*M, 1048576, const_cast<char*>("../_input/prime-1048576-bitmap.txt"));
+    N = 0; ht = new Entry<K, V>* [M];
+    memset(ht, 0, sizeof(Entry<K, V>*) * M);
+    release(lazyRemoval); lazyRemoval = new Bitmap(M);
+    for (int i = 0; i < old_capacity; i++) 
+        if (old_ht[i]) 
+            put(old_ht[i]->key, old_ht[i]->value);
+    release(old_ht);
 }
 
 #endif
