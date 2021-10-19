@@ -67,7 +67,7 @@ public:
 
 
 template<typename K, typename V> HashTable<K, V>::HashTable(int c) {
-    char s[]= "../_input/prime-1048576-bitmap.txt";
+    // char s[]= "../_input/prime-1048576-bitmap.txt";
     M = primeNLT(c, 1048576, "../_input/prime-1048576-bitmap.txt");
     N = 0; ht = new Entry<K, V>* [M];
     memset(ht, 0, sizeof(Entry<K, V>*) * M);
