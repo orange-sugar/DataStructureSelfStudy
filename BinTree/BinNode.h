@@ -11,7 +11,7 @@
 #define stature(p) ((p) ? (p)->height : -1)
 #endif
 
-template <typename T> class BinNode;
+template <typename T> struct BinNode;
 template <typename T> using BinNodePosi = BinNode<T>* ;
 typedef enum { RB_RED, RB_BLACK } RBColor;
 
@@ -28,7 +28,7 @@ struct BinNode
     BinNode(): parent(nullptr), lc(nullptr), rc(nullptr), height(0), color(RB_RED) { }
     BinNode ( T e, BinNodePosi<T> p = NULL, BinNodePosi<T> lc = NULL, BinNodePosi<T> rc = NULL,
              int h = 0, RBColor c = RB_RED) :
-      data ( e ), parent ( p ), lc ( lc ), rc ( rc ), height ( h ), color(r) { }
+      data ( e ), parent ( p ), lc ( lc ), rc ( rc ), height ( h ), color(c) { }
 
     
 

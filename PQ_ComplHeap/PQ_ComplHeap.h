@@ -36,4 +36,31 @@ Rank PQ_ComplHeap<T>::percolateUp(Rank i) {
     return i;
 }
 
+template<typename T>
+T PQ_ComplHeap<T>::delMax() {
+    T maxElem = this->_elem[0];
+    this->_elem[0] = this->_elem[--this->_size];
+    percolateDown(this->_size, 0);
+    return maxElem;
+}
+
+template<typename T>
+Rank PQ_ComplHeap<T>::percolateDown(Rank n, Rank i) {
+    Rank j;
+    while( i != (j = ProperParent(this->_elem, n, i))) {
+        swap(this->_elem[i], this->_elem[j]);
+        i = j;
+    }
+    return i;
+}
+
+template<typename T> 
+void PQ_ComplHeap<T>::heapify(Rank n) {
+    for (int i = (n>>1) - 1; 0 <= i; i-- )
+        percolateDown(n, i);
+}
+
+// template<typename T>
+// void 
+
 #endif

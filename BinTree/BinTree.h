@@ -18,7 +18,7 @@ protected:
 public:
     BinTree(): _size(0), _root(nullptr) { }
 
-    ~BinTree() { if (0 < _size);  }
+    ~BinTree() { if (0 < _size)  remove ( _root );  }
 
     int size() const { return _size; }
     bool empty() const { return !_root; }
